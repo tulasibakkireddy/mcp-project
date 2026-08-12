@@ -1,0 +1,24 @@
+name: My First GitHub Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  poc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show project files
+        run: |
+          echo "GitHub Actions is running!"
+          echo "Files in repository:"
+          ls -la
+
+      - name: Run POC
+        run: |
+          echo "Running my POC..."
