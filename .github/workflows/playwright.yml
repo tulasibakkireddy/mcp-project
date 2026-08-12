@@ -36,3 +36,10 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
+
+      - name: Add report link to summary
+        if: always()
+        run: |
+          echo "## 🎭 Playwright Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 [Download Playwright HTML Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
