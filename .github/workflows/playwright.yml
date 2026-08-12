@@ -1,58 +1,69 @@
-name: Playwright Tests
+# name: Playwright Tests
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-  workflow_dispatch:
+#   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# permissions:
+#   contents: read
+#   pages: write
+#   id-token: write
 
-jobs:
+# jobs:
 
-  playwright-tests:
-    runs-on: ubuntu-latest
+#   playwright-tests:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
+#           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+#       - name: Install Playwright browsers
+#         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests
-        run: npm test
+#       - name: Run Playwright tests
+#         run: npm test
 
-      - name: Upload Playwright report to GitHub Pages
-        if: always()
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: playwright-report/
+#       - name: Upload Playwright report to GitHub Pages
+#         if: always()
+#         uses: actions/upload-pages-artifact@v4
+#         with:
+#           path: playwright-report/
 
-  deploy:
-    needs: playwright-tests
-    if: always() && needs.playwright-tests.result != 'cancelled'
+#   deploy:
+#     needs: playwright-tests
+#     if: always() && needs.playwright-tests.result != 'cancelled'
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+#     environment:
+#       name: github-pages
+#       url: ${{ steps.deployment.outputs.page_url }}
 
-    steps:
-      - name: Deploy Playwright report
-        id: deployment
-        uses: actions/deploy-pages@v4
+#     steps:
+#       - name: Deploy Playwright report
+#         id: deployment
+#         uses: actions/deploy-pages@v4
+
+
+- name: Run Playwright tests
+  run: npm test
+
+- name: Upload Playwright report
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: playwright-report
+    path: playwright-report/
