@@ -7,7 +7,13 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
+
   playwright-tests:
     runs-on: ubuntu-latest
 
@@ -30,16 +36,23 @@ jobs:
       - name: Run Playwright tests
         run: npm test
 
-      - name: Upload Playwright report
+      - name: Upload Playwright report to GitHub Pages
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: playwright-report
           path: playwright-report/
 
-      - name: Add report link to summary
-        if: always()
-        run: |
-          echo "## 🎭 Playwright Test Report" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📊 [Download Playwright HTML Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+  deploy:
+    needs: playwright-tests
+    if: always() && needs.playwright-tests.result != 'cancelled'
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy Playwright report
+        id: deployment
+        uses: actions/deploy-pages@v4
