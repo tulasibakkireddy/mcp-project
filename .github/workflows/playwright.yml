@@ -14,8 +14,10 @@ on:
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
+env:
+    BASE_URL: ${{ vars.BASE_URL }}
 
-    steps:
+steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
