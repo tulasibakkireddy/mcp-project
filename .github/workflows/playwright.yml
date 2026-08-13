@@ -8,16 +8,17 @@ on:
   workflow_dispatch:
 
   schedule:
-  - cron: '0 * * * *'
-    timezone: 'Asia/Kolkata'
+    - cron: '0 * * * *'
+      timezone: 'Asia/Kolkata'
 
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
-env:
-    BASE_URL: ${{ vars.BASE_URL }}
 
-steps:
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
